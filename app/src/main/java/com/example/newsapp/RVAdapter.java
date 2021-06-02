@@ -1,6 +1,8 @@
 package com.example.newsapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewVH>{
     private Context mContext;
@@ -43,6 +48,19 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewVH>{
         holder.card_title.setText(title);
         holder.card_date.setText(date);
         holder.card_source.setText(source);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(mContext, DetailsActivity.class);
+                mContext.startActivity(i);
+            }
+        });
+
+        Picasso.get().load(image_url).into(holder.card_image);
+
+
+
 
 
     }
