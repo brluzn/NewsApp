@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         links=new ArrayList<>();
         images_urls=new ArrayList<>();
 
+
         new ProcessInBackground().execute();
 
 
@@ -125,6 +126,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         }else if (xpp.getName().equalsIgnoreCase("link")){
                             if (insideItem){
 
+
+
+
                                 links.add(xpp.nextText());
                             }
                         }else if(xpp.getName().equalsIgnoreCase("pubDate")){
@@ -169,7 +173,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             for (int i=0;i<titles.size();i++){
 
                 //System.out.println(d);
-                model_class nw=new model_class(titles.get(i),links.get(i),pubDates.get(i),images_urls.get(i));
+                String source=links.get(i).substring(12,14).toUpperCase();
+                model_class nw=new model_class(titles.get(i),source,links.get(i),pubDates.get(i),images_urls.get(i));
                 allNews.add(nw);
             }
 
@@ -241,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        System.out.println(output.format(date1));
+
 
         return output.format(date1);
 
