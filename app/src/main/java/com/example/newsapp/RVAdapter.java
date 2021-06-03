@@ -53,6 +53,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewVH>{
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(mContext, DetailsActivity.class);
+                i.putExtra("url",link);
                 mContext.startActivity(i);
             }
         });

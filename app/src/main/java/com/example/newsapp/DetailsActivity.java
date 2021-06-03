@@ -2,11 +2,17 @@ package com.example.newsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -20,17 +26,22 @@ import java.util.concurrent.ExecutionException;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private ImageView imageView;
+    private WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        Intent intent = getIntent();
+        String link=intent.getStringExtra("url");
 
 
-        imageView=findViewById(R.id.imageView);
+        webView=findViewById(R.id.webview);
+        webView.getSettings().setJavaScriptEnabled(true);
 
+        webView.setWebViewClient(new WebViewClient());
 
-        Picasso.get().load("https://cdnuploads.aa.com.tr/uploads/Contents/2021/06/02/thumbs_b_c_6b3c3a9ab2d1ef24c4cfb763226ecec1.jpg?v=025740").into(imageView);
+        webView.loadUrl(link);
+
 
 
     }
