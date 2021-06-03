@@ -10,8 +10,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -33,10 +35,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RecyclerView recyclerView;
     private ArrayList<model_class> allNews;
     private RVAdapter adapter;
+    public  ArrayList<String> titles;
+    public  ArrayList<String> pubDates;
+    public  ArrayList<String> links;
+    public  ArrayList<String> images_urls;
 
     String im="https://cdnuploads.aa.com.tr/uploads/Contents/2021/06/02/thumbs_b_c_6b3c3a9ab2d1ef24c4cfb763226ecec1.jpg?v=025740";
 
-    private ArrayList<Bitmap> images;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,22 +58,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         allNews=new ArrayList<>();
-        images=new ArrayList<>();
+        titles=new ArrayList<>();
+        pubDates=new ArrayList<>();
+        links=new ArrayList<>();
+        images_urls=new ArrayList<>();
+
+        new ProcessInBackground().execute();
 
 
 
-        model_class a=new model_class("burası başlık asdadasd asdas das d sdasdasdassdsdadadaddsd skısmı","ATAV","haberin link","15/4/20", "https://cdnuploads.aa.com.tr/uploads/Contents/2021/06/02/thumbs_b_c_6b3c3a9ab2d1ef24c4cfb763226ecec1.jpg?v=025740");
-        model_class b=new model_class("burası başlık kısmı","AA","source","05/6/2021","https://cdnuploads.aa.com.tr/uploads/Contents/2021/06/02/thumbs_b_c_6b3c3a9ab2d1ef24c4cfb763226ecec1.jpg?v=025740");
 
-        allNews.add(a);
-        allNews.add(a);
-        allNews.add(b);
-        allNews.add(b);
-        allNews.add(b);
-        allNews.add(b);
-
-        adapter=new RVAdapter(this,allNews);
-        recyclerView.setAdapter(adapter);
     }
 
 
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
-    public class ProcessInBackground extends AsyncTask<Integer,Integer,String>{
+    public class ProcessInBackground extends AsyncTask<Integer,Integer,Exception>{
         Exception exception=null;
         @Override
         protected void onPreExecute() {
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         @Override
-        protected String doInBackground(Integer... integers) {
+        protected Exception doInBackground(Integer... integers) {
 
             try {
                 URL url=new URL("https://www.aa.com.tr/tr/rss/default?cat=turkiye");
@@ -113,10 +113,36 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                         }else if (xpp.getName().equalsIgnoreCase("title")){
 
-                            if()
+                            if(insideItem){
 
+                                titles.add(xpp.nextText());
+                            }
+
+                        }else if (xpp.getName().equalsIgnoreCase("link")){
+                            if (insideItem){
+
+                                links.add(xpp.nextText());
+                            }
+                        }else if(xpp.getName().equalsIgnoreCase("pubDate")){
+                            if (insideItem){
+
+                                pubDates.add(xpp.nextText());
+                            }
+                        }else if(xpp.getName().equalsIgnoreCase("image")){
+                            if (insideItem){
+
+                                images_urls.add(xpp.nextText());
+                            }
                         }
+
+
+
+
+                    }else if (eventType==XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")){
+
+                        insideItem=false;
                     }
+                    eventType=xpp.next();
                 }
 
 
@@ -127,12 +153,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }catch (IOException e){
                 exception=e;
             }
-            return null;
+            return exception;
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Exception s) {
             super.onPostExecute(s);
+
+
+            for (int i=0;i<titles.size();i++){
+                model_class nw=new model_class(titles.get(i),links.get(i),pubDates.get(i),images_urls.get(i));
+                allNews.add(nw);
+            }
+            System.out.println(allNews.size());
+            adapter=new RVAdapter(MainActivity.this,allNews);
+            recyclerView.setAdapter(adapter);
+
+
         }
     }
 
