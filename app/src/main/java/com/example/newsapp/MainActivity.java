@@ -24,7 +24,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public  ArrayList<String> links;
     public  ArrayList<String> images_urls;
 
+    Date d ;
     String im="https://cdnuploads.aa.com.tr/uploads/Contents/2021/06/02/thumbs_b_c_6b3c3a9ab2d1ef24c4cfb763226ecec1.jpg?v=025740";
 
 
@@ -126,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         }else if(xpp.getName().equalsIgnoreCase("pubDate")){
                             if (insideItem){
 
-                                pubDates.add(xpp.nextText());
+                                pubDates.add(dateEdit(xpp.nextText()));
                             }
                         }else if(xpp.getName().equalsIgnoreCase("image")){
                             if (insideItem){
@@ -161,11 +165,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             super.onPostExecute(s);
 
 
+
             for (int i=0;i<titles.size();i++){
+
+                //System.out.println(d);
                 model_class nw=new model_class(titles.get(i),links.get(i),pubDates.get(i),images_urls.get(i));
                 allNews.add(nw);
             }
-            System.out.println(allNews.size());
+
             adapter=new RVAdapter(MainActivity.this,allNews);
             recyclerView.setAdapter(adapter);
 
@@ -223,6 +230,22 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
 
 
+    public String dateEdit(String date)  {
+
+        SimpleDateFormat input = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z");
+        SimpleDateFormat output = new SimpleDateFormat("dd/MM/yyyy");
+
+        Date date1= null;
+        try {
+            date1 = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(output.format(date1));
+
+        return output.format(date1);
+
+    }
 
 
 
