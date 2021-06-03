@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Debug;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
@@ -185,7 +186,51 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    
+    /*public  void LoadingImage(View view){
+        DownLoadImage downLoadImage=new DownLoadImage();
+        try {
+            Bitmap bitmap=downLoadImage.execute(im).get();
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public  class DownLoadImage extends AsyncTask<String,Void ,Bitmap>{
+
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+
+
+            Bitmap bitmap=null;
+            URL url;
+            HttpURLConnection httpURLConnection;
+
+            InputStream in;
+
+            try {
+                url=new URL(strings[0]);
+                httpURLConnection= (HttpURLConnection) url.openConnection();
+                in=httpURLConnection.getInputStream();
+
+                bitmap= BitmapFactory.decodeStream(in);
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+    }*/
+
 
 
 
@@ -209,7 +254,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
+    private void filter(String text){
+        ArrayList<model_class> filteredList=new ArrayList<>();
 
+        for(model_class item:allNews){
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+
+        adapter.filterList(filteredList);
+    }
 
 
 
@@ -217,6 +272,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu,menu);
+        MenuItem menuItem=menu.findItem(R.id.action_search);
+        SearchView searchView= (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -224,11 +282,18 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+
+
         return false;
+
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        return false;
+        filter(newText);
+
+        System.out.println(newText);
+        return true;
     }
 }
+

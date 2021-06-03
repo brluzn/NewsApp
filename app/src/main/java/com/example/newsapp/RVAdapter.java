@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -59,16 +60,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CardViewVH>{
         });
 
         Picasso.get().load(image_url).into(holder.card_image);
-
-
-
-
-
     }
 
     @Override
     public int getItemCount() {
         return Allnews.size();
+    }
+
+    public void filterList(ArrayList<model_class> filteredList){
+        Allnews=filteredList;
+        notifyDataSetChanged();
     }
 
     public class CardViewVH extends RecyclerView.ViewHolder{
