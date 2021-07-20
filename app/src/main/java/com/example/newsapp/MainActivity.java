@@ -186,50 +186,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    /*public  void LoadingImage(View view){
-        DownLoadImage downLoadImage=new DownLoadImage();
-        try {
-            Bitmap bitmap=downLoadImage.execute(im).get();
-
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public  class DownLoadImage extends AsyncTask<String,Void ,Bitmap>{
-
-
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-
-
-            Bitmap bitmap=null;
-            URL url;
-            HttpURLConnection httpURLConnection;
-
-            InputStream in;
-
-            try {
-                url=new URL(strings[0]);
-                httpURLConnection= (HttpURLConnection) url.openConnection();
-                in=httpURLConnection.getInputStream();
-
-                bitmap= BitmapFactory.decodeStream(in);
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-    }*/
 
 
 
