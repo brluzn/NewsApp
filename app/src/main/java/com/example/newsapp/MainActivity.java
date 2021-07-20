@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         protected Exception doInBackground(Integer... integers) {
 
             try {
-                URL url=new URL("https://www.aa.com.tr/tr/rss/default?cat=turkiye");
+                URL url=new URL("https://www.aa.com.tr/tr/rss/default?cat=guncel");
                 XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);
                 XmlPullParser xpp=factory.newPullParser();
