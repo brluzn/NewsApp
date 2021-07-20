@@ -25,6 +25,10 @@ RSS Feed Link :https://www.aa.com.tr/tr/rss/default?cat=guncel
 
 ## UI
 
+![newsapp](https://user-images.githubusercontent.com/42109123/126251519-dc84c425-adf8-430b-b4cc-3a27555bd7a2.gif)
+
+
+
 ## Author
 
 **Birol Uzun**
